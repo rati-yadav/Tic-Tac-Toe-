@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - Statistics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            padding: 2rem;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .stats-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            max-width: 500px;
+            width: 90%;
+            transform: translateY(0);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-3px);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .stats-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(4px);
+        }
+
+        .stats-section h2 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .game-history {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 1rem;
+        }
+
+        .game-history::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .game-history::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .game-history::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            margin-bottom: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .history-item.win {
+            border-left: 4px solid #4ecdc4;
+        }
+
+        .history-item.loss {
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .history-item.draw {
+            border-left: 4px solid #6b66ff;
+        }
+
+        .history-date {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .reset-stats {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .reset-stats:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+
+            .stats-container {
+                padding: 1.5rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .stats-section h2 {
+                font-size: 1.2rem;
+            }
+
+            .stat-value {
+                font-size: 1.8rem;
+            }
+
+            .history-item {
+                padding: 0.6rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stats-container">
+        <div class="header">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1>Game Statistics <i class="fas fa-chart-bar"></i></h1>
+        </div>
+
+        <div class="stats-section">
+            <h2><i class="fas fa-trophy"></i> Overall Performance</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalGames">0</div>
+                    <div class="stat-label">Total Games</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="winRate">0%</div>
+                    <div class="stat-label">Win Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="wins">0</div>
+                    <div class="stat-label">Wins</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="draws">0</div>
+                    <div class="stat-label">Draws</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <h2><i class="fas fa-history"></i> Recent Games</h2>
+            <div class="game-history" id="gameHistory">
+                <!-- Game history items will be added here -->
+            </div>
+        </div>
+
+        <button class="reset-stats" onclick="resetStats()">
+            <i class="fas fa-trash-alt"></i> Reset Statistics
+        </button>
+    </div>
+
+    <script>
+        // Load statistics from localStorage
+        let stats = JSON.parse(localStorage.getItem('gameStats')) || {
+            totalGames: 0,
+            wins: 0,
+            draws: 0,
+            history: []
+        };
+
+        // DOM Elements
+        const totalGamesEl = document.getElementById('totalGames');
+        const winRateEl = document.getElementById('winRate');
+        const winsEl = document.getElementById('wins');
+        const drawsEl = document.getElementById('draws');
+        const gameHistoryEl = document.getElementById('gameHistory');
+
+        // Initialize statistics display
+        window.onload = function() {
+            updateStatsDisplay();
+            displayGameHistory();
+        };
+
+        function updateStatsDisplay() {
+            totalGamesEl.textContent = stats.totalGames;
+            winsEl.textContent = stats.wins;
+            drawsEl.textContent = stats.draws;
+            
+            const winRate = stats.totalGames > 0 
+                ? Math.round((stats.wins / stats.totalGames) * 100) 
+                : 0;
+            winRateEl.textContent = `${winRate}%`;
+        }
+
+        function displayGameHistory() {
+            gameHistoryEl.innerHTML = '';
+            
+            if (stats.history.length === 0) {
+                gameHistoryEl.innerHTML = '<div class="history-item">No games played yet</div>';
+                return;
+            }
+
+            stats.history.slice().reverse().forEach(game => {
+                const historyItem = document.createElement('div');
+                historyItem.className = `history-item ${game.result}`;
+                
+                const gameInfo = document.createElement('div');
+                gameInfo.innerHTML = `
+                    <div>${game.mode === 'pvp' ? '👥 PvP' : '🤖 PvC'}</div>
+                    <div>${game.result === 'win' ? '🎉 Win' : game.result === 'loss' ? '😢 Loss' : '🤝 Draw'}</div>
+                `;
+                
+                const dateInfo = document.createElement('div');
+                dateInfo.className = 'history-date';
+                dateInfo.textContent = new Date(game.date).toLocaleString();
+                
+                historyItem.appendChild(gameInfo);
+                historyItem.appendChild(dateInfo);
+                gameHistoryEl.appendChild(historyItem);
+            });
+        }
+
+        function resetStats() {
+            if (confirm('Are you sure you want to reset all statistics?')) {
+                stats = {
+                    totalGames: 0,
+                    wins: 0,
+                    draws: 0,
+                    history: []
+                };
+                localStorage.setItem('gameStats', JSON.stringify(stats));
+                updateStatsDisplay();
+                displayGameHistory();
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'game.html';
+        }
+
+        // Responsive Design Functions
+        function updateResponsiveStyles() {
+            const container = document.querySelector('.stats-container');
+            const windowWidth = window.innerWidth;
+            
+            // Calculate responsive sizes
+            const containerWidth = Math.min(windowWidth * 0.9, 500);
+            
+            // Update container
+            container.style.width = `${containerWidth}px`;
+            container.style.padding = `${Math.min(containerWidth * 0.04, 2)}rem`;
+            
+            // Update header
+            const header = document.querySelector('.header');
+            header.style.marginBottom = `${Math.min(containerWidth * 0.04, 2)}rem`;
+            
+            // Update title
+            const h1 = document.querySelector('h1');
+            h1.style.fontSize = `${Math.min(containerWidth * 0.04, 1.8)}rem`;
+            
+            // Update back button
+            const backBtn = document.querySelector('.back-btn');
+            backBtn.style.width = `${Math.min(containerWidth * 0.08, 40)}px`;
+            backBtn.style.height = `${Math.min(containerWidth * 0.08, 40)}px`;
+            
+            // Update stats sections
+            const statsSections = document.querySelectorAll('.stats-section');
+            statsSections.forEach(section => {
+                section.style.padding = `${Math.min(containerWidth * 0.03, 1.5)}rem`;
+                section.style.marginBottom = `${Math.min(containerWidth * 0.04, 2)}rem`;
+                
+                // Update section titles
+                const h2 = section.querySelector('h2');
+                h2.style.fontSize = `${Math.min(containerWidth * 0.026, 1.3)}rem`;
+                
+                // Update icons in titles
+                const icon = h2.querySelector('i');
+                if (icon) {
+                    icon.style.fontSize = `${Math.min(containerWidth * 0.03, 1.2)}rem`;
+                }
+            });
+            
+            // Update stat cards
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach(card => {
+                card.style.padding = `${Math.min(containerWidth * 0.02, 1)}rem`;
+                
+                // Update stat values
+                const value = card.querySelector('.stat-value');
+                value.style.fontSize = `${Math.min(containerWidth * 0.04, 2)}rem`;
+                
+                // Update stat labels
+                const label = card.querySelector('.stat-label');
+                label.style.fontSize = `${Math.min(containerWidth * 0.018, 0.9)}rem`;
+            });
+            
+            // Update game history
+            const historyItems = document.querySelectorAll('.history-item');
+            historyItems.forEach(item => {
+                item.style.padding = `${Math.min(containerWidth * 0.016, 0.8)}rem`;
+                item.style.marginBottom = `${Math.min(containerWidth * 0.016, 0.8)}rem`;
+                
+                // Update date
+                const date = item.querySelector('.history-date');
+                date.style.fontSize = `${Math.min(containerWidth * 0.016, 0.8)}rem`;
+            });
+            
+            // Update reset button
+            const resetBtn = document.querySelector('.reset-stats');
+            resetBtn.style.padding = `${Math.min(containerWidth * 0.016, 0.8)}rem ${Math.min(containerWidth * 0.03, 1.5)}rem`;
+            resetBtn.style.fontSize = `${Math.min(containerWidth * 0.02, 1)}rem`;
+            
+            // Update icon in reset button
+            const resetIcon = resetBtn.querySelector('i');
+            if (resetIcon) {
+                resetIcon.style.fontSize = `${Math.min(containerWidth * 0.022, 1.1)}rem`;
+            }
+        }
+
+        // Initialize responsive design
+        window.addEventListener('load', function() {
+            updateResponsiveStyles();
+            updateStatsDisplay();
+            displayGameHistory();
+        });
+
+        // Update on window resize
+        window.addEventListener('resize', function() {
+            updateResponsiveStyles();
+        });
+
+        // Update on orientation change
+        window.addEventListener('orientationchange', function() {
+            setTimeout(updateResponsiveStyles, 100);
+        });
+
+        // Touch device detection
+        function isTouchDevice() {
+            return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        }
+
+        // Update interaction based on device
+        if (isTouchDevice()) {
+            document.querySelectorAll('button, .stat-card, .history-item').forEach(element => {
+                element.style.cursor = 'pointer';
+                element.style.touchAction = 'manipulation';
+            });
+        }
+
+        // Prevent double-tap zoom on mobile
+        document.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        // Handle touch events for better mobile experience
+        document.querySelectorAll('button, .stat-card, .history-item').forEach(element => {
+            element.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                this.style.transform = 'scale(0.95)';
+            }, { passive: false });
+
+            element.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                this.style.transform = 'scale(1)';
+            }, { passive: false });
+        });
+    </script>
+</body>
+</html> 

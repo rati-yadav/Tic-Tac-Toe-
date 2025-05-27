@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - Start Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .start-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            transform: translateY(0);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .game-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .game-modes {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .mode-btn {
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .mode-btn i {
+            font-size: 1.3rem;
+        }
+
+        .pvp-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+        }
+
+        .pvc-btn {
+            background: linear-gradient(45deg, #4ecdc4, #45b7af);
+        }
+
+        .start-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #6b66ff, #8e8aff);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(107, 102, 255, 0.4);
+        }
+
+        .game-info {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .game-info p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 480px) {
+            .start-container {
+                padding: 1.5rem;
+                max-width: 350px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .game-icon {
+                font-size: 3rem;
+            }
+
+            .mode-btn {
+                padding: 0.8rem;
+                font-size: 1rem;
+            }
+
+            .start-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="start-container">
+        <div class="game-icon">🎮</div>
+        <h1>Tic Tac Toe</h1>
+        
+        <div class="game-modes">
+            <button class="mode-btn pvp-btn" onclick="selectMode('pvp')">
+                <i class="fas fa-users"></i> Player vs Player
+            </button>
+            <button class="mode-btn pvc-btn" onclick="selectMode('pvc')">
+                <i class="fas fa-robot"></i> Player vs Computer
+            </button>
+        </div>
+
+        <button class="start-btn" onclick="startGame()">
+            <i class="fas fa-play"></i> Start Game
+        </button>
+
+        <div class="game-info">
+            <p><i class="fas fa-info-circle"></i> Select a game mode to start playing</p>
+            <p><i class="fas fa-trophy"></i> First player to get 3 in a row wins!</p>
+        </div>
+    </div>
+
+    <script>
+        let selectedMode = 'pvp';
+
+        function selectMode(mode) {
+            selectedMode = mode;
+            // Update button styles
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.style.opacity = '0.7';
+            });
+            document.querySelector(`.${mode}-btn`).style.opacity = '1';
+        }
+
+        function startGame() {
+            // Store the selected game mode in localStorage
+            localStorage.setItem('gameMode', selectedMode);
+            // Redirect to the game page
+            window.location.href = 'game.html';
+        }
+
+        // Responsive Design Functions
+        function updateResponsiveStyles() {
+            const container = document.querySelector('.start-container');
+            const windowWidth = window.innerWidth;
+            
+            // Calculate responsive sizes
+            const containerWidth = Math.min(windowWidth * 0.9, 400);
+            const buttonWidth = Math.min(containerWidth * 0.8, 300);
+            
+            // Update container
+            container.style.width = `${containerWidth}px`;
+            container.style.padding = `${Math.min(containerWidth * 0.05, 2)}rem`;
+            
+            // Update game icon
+            const gameIcon = document.querySelector('.game-icon');
+            gameIcon.style.fontSize = `${Math.min(containerWidth * 0.15, 4)}rem`;
+            
+            // Update title
+            const h1 = document.querySelector('h1');
+            h1.style.fontSize = `${Math.min(containerWidth * 0.08, 2.5)}rem`;
+            
+            // Update buttons
+            const buttons = document.querySelectorAll('.mode-btn, .start-btn');
+            buttons.forEach(button => {
+                button.style.width = `${buttonWidth}px`;
+                button.style.padding = `${Math.min(containerWidth * 0.03, 1)}rem`;
+                button.style.fontSize = `${Math.min(containerWidth * 0.04, 1.2)}rem`;
+                
+                // Update icons
+                const icon = button.querySelector('i');
+                if (icon) {
+                    icon.style.fontSize = `${Math.min(containerWidth * 0.05, 1.5)}rem`;
+                }
+            });
+            
+            // Update game info
+            const gameInfo = document.querySelector('.game-info');
+            gameInfo.style.padding = `${Math.min(containerWidth * 0.04, 1.5)}rem`;
+            gameInfo.style.fontSize = `${Math.min(containerWidth * 0.03, 1)}rem`;
+            
+            // Update tips
+            const tips = document.querySelectorAll('.game-info p');
+            tips.forEach(tip => {
+                tip.style.marginBottom = `${Math.min(containerWidth * 0.02, 0.8)}rem`;
+            });
+        }
+
+        // Initialize responsive design
+        window.addEventListener('load', function() {
+            updateResponsiveStyles();
+        });
+
+        // Update on window resize
+        window.addEventListener('resize', function() {
+            updateResponsiveStyles();
+        });
+
+        // Update on orientation change
+        window.addEventListener('orientationchange', function() {
+            setTimeout(updateResponsiveStyles, 100);
+        });
+
+        // Touch device detection
+        function isTouchDevice() {
+            return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        }
+
+        // Update button interaction based on device
+        if (isTouchDevice()) {
+            document.querySelectorAll('button').forEach(button => {
+                button.style.cursor = 'pointer';
+                button.style.touchAction = 'manipulation';
+            });
+        }
+
+        // Prevent double-tap zoom on mobile
+        document.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        // Handle touch events for better mobile experience
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                this.style.transform = 'scale(0.95)';
+            }, { passive: false });
+
+            button.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                this.style.transform = 'scale(1)';
+            }, { passive: false });
+        });
+    </script>
+</body>
+</html> 
